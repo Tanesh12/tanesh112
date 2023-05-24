@@ -1,0 +1,40 @@
+def is_plank_nailed(A, B, nails, mid):
+    planks = len(A)
+    nailed = [False] * planks
+
+    for i in range(mid+1):
+        nail_position = nails[i]
+
+        for j in range(planks):
+            if not nailed[j] and A[j] <= nail_position <= B[j]:
+                nailed[j] = True
+
+                # Break the inner loop if all planks are nailed
+                if all(nailed):
+                    break
+
+        # Break the outer loop if all planks are nailed
+        if all(nailed):
+            break
+
+    return all(nailed)
+
+
+def solution(A, B, C):
+    planks = len(A)
+    nails = sorted(C)
+    
+    min_nails = 1
+    max_nails = len(C)
+    result = -1
+
+    while min_nails <= max_nails:
+        mid = (min_nails + max_nails) // 2
+
+        if is_plank_nailed(A, B, nails, mid):
+            result = mid
+            max_nails = mid - 1
+        else:
+            min_nails = mid + 1
+
+    return result
